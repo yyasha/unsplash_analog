@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  app:
+    image: registry.computernetthings.ru/unsplash/backend:latest
+    container_name: app
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - app_pg
+      - redis
+    ports:
+      - 3000:3000
+    networks:
+      microservicesnet:
+        ipv4_address: 192.168.4.3
+
+  app_pg:
+    image: postgres:16-alpine
+    container_name: app_pg
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    networks:
+      microservicesnet:
+        ipv4_address: 192.168.4.4
+
+  redis:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    env_file: .env
+    command: redis-server --save 20 1 --loglevel warning --requirepass $RDB_PASSWORD
+    volumes: 
+      - ./cache:/date
+    networks:
+      microservicesnet:
+        ipv4_address: 192.168.4.5
+
+networks:
+  microservicesnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.4.0/24"
