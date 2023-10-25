@@ -14,6 +14,9 @@ type Config struct {
 	DOWN_OLD_DB_EVERYTIME bool   `mapstructure:"DOWN_OLD_DB_EVERYTIME"`
 	RDB_PASSWORD          string `mapstructure:"RDB_PASSWORD"`
 	RDB_ADDR              string `mapstructure:"RDB_ADDR"`
+	MINIO_ADDR            string `mapstructure:"MINIO_ADDR"`
+	MINIO_ROOT_USER       string `mapstructure:"MINIO_ROOT_USER"`
+	MINIO_ROOT_PASSWORD   string `mapstructure:"MINIO_ROOT_PASSWORD"`
 }
 
 var envList []string = []string{
@@ -26,6 +29,9 @@ var envList []string = []string{
 	"DOWN_OLD_DB_EVERYTIME",
 	"RDB_PASSWORD",
 	"RDB_ADDR",
+	"MINIO_ADDR",
+	"MINIO_ROOT_USER",
+	"MINIO_ROOT_PASSWORD",
 }
 
 // Global config variable

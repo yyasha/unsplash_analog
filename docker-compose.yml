@@ -41,6 +41,24 @@ services:
     networks:
       microservicesnet:
         ipv4_address: 192.168.4.5
+  
+  minio:
+    image: minio/minio
+    container_name: minio
+    restart: unless-stopped
+    command: ["server", "--console-address", ":9001", "/data"]
+    env_file: .env
+    environment:
+      - MINIO_ROOT_USER=$MINIO_ROOT_USER
+      - MINIO_ROOT_PASSWORD=$MINIO_ROOT_PASSWORD
+    volumes:
+      - ./data/minio:/data
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      microservicesnet:
+        ipv4_address: 192.168.4.6
 
 networks:
   microservicesnet:
